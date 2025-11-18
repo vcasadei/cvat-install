@@ -24,7 +24,9 @@ Este passo é **obrigatório** para que os containers Nuclio e Traefik consigam 
 
 ### 1. Aplicar Correção de API do Docker
 
-Você deve instruir o Docker Engine a aceitar clientes antigos (versão 1.24), resolvendo o erro `client version is too old`. (Source: [Docker Engine v29: Foundational Updates for the Future](https://www.docker.com/blog/docker-engine-version-29/ and [Discussion](https://forums.docker.com/t/docker-29-increased-minimum-api-version-breaks-traefik-reverse-proxy/150384/10))
+Você deve instruir o Docker Engine a aceitar clientes antigos (versão 1.24), resolvendo o erro `client version is too old`. 
+
+Source: [Docker Engine v29: Foundational Updates for the Future](https://www.docker.com/blog/docker-engine-version-29/) and [Discussion](https://forums.docker.com/t/docker-29-increased-minimum-api-version-breaks-traefik-reverse-proxy/150384/10)
 
 1.  Edite o arquivo de configuração do daemon (geralmente via `sudo nano /etc/docker/daemon.json`).
     
