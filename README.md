@@ -31,7 +31,7 @@ Você deve instruir o Docker Engine a aceitar clientes antigos (versão 1.24), r
 2.  **Adicione ou modifique** a linha `min-api-version`.
     
 
-JSON```
+```json
 {
   "min-api-version": "1.24"
 }
@@ -40,8 +40,8 @@ JSON```
 
 3.  Reinicie o serviço do Docker para aplicar a mudança:
     
-    Bash
-    ```
+    
+    ```bash
     sudo systemctl restart docker
     
     ```
@@ -49,8 +49,8 @@ JSON```
 
 ### 2. Preparar Diretórios e Permissões
 
-Bash
-```
+
+```bash
 # Entrar na pasta do projeto
 mkdir -p ~/cvat-gpu-lab
 cd ~/cvat-gpu-lab
@@ -72,8 +72,8 @@ sudo chown -R 1000:1000 ~/cvat_share
 
 ### 3. Clonar a Versão Estável
 
-Bash
-```
+
+```bash
 # Clona a versão v2.10.0 (Estável)
 git clone -b v2.10.0 https://github.com/cvat-ai/cvat.git .
 
@@ -85,7 +85,6 @@ git clone -b v2.10.0 https://github.com/cvat-ai/cvat.git .
 
 Crie o arquivo `.env` na raiz:
 
-Ini, TOML
 ```
 # --- REDE ---
 CVAT_HOST=172.25.6.20
@@ -102,8 +101,8 @@ CVAT_VERSION=v2.10.0
 
 Crie o arquivo de override com todas as configurações de portabilidade e GPU:
 
-YAML
-```
+
+```yaml
 version: '3.3'
 
 services:
@@ -154,8 +153,8 @@ services:
 
 Comente as portas no arquivo original para evitar conflito com seu override:
 
-Bash
-```
+
+```bash
 sed -i 's/ports:/# ports:/g' docker-compose.yml
 sed -i 's/- 8080:8080/# - 8080:8080/g' docker-compose.yml
 sed -i 's/- 8090:8090/# - 8090:8090/g' docker-compose.yml
@@ -164,8 +163,8 @@ sed -i 's/- 8090:8090/# - 8090:8090/g' docker-compose.yml
 
 ### 6. Executar o Sistema
 
-Bash
-```
+
+```bash
 export CVAT_HOST=172.25.6.20
 
 docker compose \
@@ -181,15 +180,15 @@ docker compose \
 
 1.  **Criar Admin:**
     
-    Bash
-    ```
+    
+    ```bash
     docker exec -it cvat_server python3 manage.py createsuperuser
     ```
 
 ### 8. Instalar Modelos de IA (Final)
 
-Bash
-```
+
+```bash
 # Instalar nuctl (se necessário) e deployar SAM e YOLOv7...
 # Baixa nuctl (Se ainda não tiver) wget 
 https://github.com/nuclio/nuclio/releases/download/1.8.14/nuctl-1.8.14-linux-amd64 chmod +x nuctl-1.8.14-linux-amd64 sudo mv nuctl-1.8.14-linux-amd64 /usr/local/bin/nuctl 
@@ -210,8 +209,8 @@ Com base na estrutura de modelos da sua versão do CVAT (`v2.49.0`), os modelos 
 
 Embora o YOLO seja rápido, o RetinaNet é um detector de objetos robusto e de alta precisão (R-CNN based). Instalá-lo oferece uma alternativa para quando o YOLO falhar ou para casos que exigem maior rigor.
 
-Bash
-```
+
+```bash
 nuctl deploy --project-name cvat \
   --path serverless/pytorch/facebookresearch/detectron2/retinanet_r101/nuclio \
   --platform local \
@@ -225,8 +224,8 @@ nuctl deploy --project-name cvat \
 
 Este modelo é essencial, pois ele faz duas coisas ao mesmo tempo: **Detecção** e **Segmentação** (criação de máscaras pixel a pixel). Além disso, ele é baseado em **TensorFlow**, o que garante que sua segunda stack de Deep Learning esteja funcional e pronta para uso.
 
-Bash
-```
+
+```bash
 nuctl deploy --project-name cvat \
   --path serverless/tensorflow/matterport/mask_rcnn/nuclio \
   --platform local \
@@ -240,8 +239,8 @@ nuctl deploy --project-name cvat \
 
 Este modelo oferece uma funcionalidade totalmente nova, crucial para anotação de vídeos: **Rastreamento**. Você marca o objeto no primeiro frame, e o SiamMask o rastreia automaticamente nos frames seguintes.
 
-Bash
-```
+
+```bash
 nuctl deploy --project-name cvat \
   --path serverless/pytorch/foolwood/siammask/nuclio \
   --platform local \
