@@ -31,8 +31,7 @@ Você deve instruir o Docker Engine a aceitar clientes antigos (versão 1.24), r
 2.  **Adicione ou modifique** a linha `min-api-version`.
     
 
-JSON
-```
+JSON```
 {
   "min-api-version": "1.24"
 }
